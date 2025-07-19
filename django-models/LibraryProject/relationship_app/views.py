@@ -1,5 +1,6 @@
 # 1. Function-Based View (FBV) — List all books
 
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.shortcuts import render
 from .models import Book
 
@@ -23,7 +24,6 @@ class LibraryDetailView(DetailView):
 
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.decorators import login_required
 
 def user_login(request):
