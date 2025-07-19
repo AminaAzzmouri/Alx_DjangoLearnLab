@@ -1,4 +1,5 @@
-from .models import Book, Library
+from .models import Library
+from .models import Book
 
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.shortcuts import render, redirect
