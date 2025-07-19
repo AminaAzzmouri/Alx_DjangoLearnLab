@@ -5,7 +5,7 @@ from .models import Book
 
 def list_books(request):
     books = Book.objects.all()
-    return render(request, 'list_books.html', {'books': books})
+    return render(request, 'relationship_app/list_books.html', {'books': books})
 
 
 # 2. Class-Based View (CBV) — Detail view for a specific Library with its books
