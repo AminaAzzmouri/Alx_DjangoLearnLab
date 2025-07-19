@@ -1,23 +1,20 @@
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, logout
+from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required, user_passes_test
-from .models import Book, Library
 from django.views.generic.detail import DetailView
-
+from .models import Book, Library  # <-- Make sure this line is here!
 
 # 1. Function-Based View (FBV) — List all books
 def list_books(request):
     books = Book.objects.all()
     return render(request, 'relationship_app/list_books.html', {'books': books})
 
-
 # 2. Class-Based View (CBV) — Detail view for a specific Library with its books
 class LibraryDetailView(DetailView):
     model = Library
     template_name = 'relationship_app/library_detail.html'
     context_object_name = 'library'
-
 
 # 3. Authentication Views
 def user_login(request):
@@ -26,16 +23,14 @@ def user_login(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            return redirect('list_books')
+            return redirect('list_books')  # Or any page you want after login
     else:
         form = AuthenticationForm()
     return render(request, 'relationship_app/login.html', {'form': form})
 
-
 def user_logout(request):
     logout(request)
     return render(request, 'relationship_app/logout.html')
-
 
 def register(request):
     if request.method == 'POST':
@@ -48,16 +43,14 @@ def register(request):
         form = UserCreationForm()
     return render(request, 'relationship_app/register.html', {'form': form})
 
-
 # 4. Role-based Access Control Views
 
+# Helper functions to check roles
 def is_admin(user):
     return user.is_authenticated and hasattr(user, 'userprofile') and user.userprofile.role == 'Admin'
 
-
 def is_librarian(user):
     return user.is_authenticated and hasattr(user, 'userprofile') and user.userprofile.role == 'Librarian'
-
 
 def is_member(user):
     return user.is_authenticated and hasattr(user, 'userprofile') and user.userprofile.role == 'Member'
