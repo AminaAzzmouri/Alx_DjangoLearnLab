@@ -1,6 +1,7 @@
 # 1. Function-Based View (FBV) — List all books
 
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render
 from .models import Book
 
