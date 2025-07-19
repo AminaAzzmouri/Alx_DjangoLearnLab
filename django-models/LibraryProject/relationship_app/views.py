@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.views.generic.detail import DetailView
-from .models import Book, Library  # <-- Make sure this line is here!
+from .models import Book, Library
 
 # 1. Function-Based View (FBV) — List all books
 def list_books(request):
