@@ -10,19 +10,6 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
-
-# Prevent your site from being framed (protects against clickjacking)
-X_FRAME_OPTIONS = "DENY"
-
-# Prevent browsers from MIME-sniffing a response away from the declared content-type
-SECURE_CONTENT_TYPE_NOSNIFF = True
-
-# Enable the browser's XSS filtering and prevent cross-site scripting attacks
-SECURE_BROWSER_XSS_FILTER = True
-
-
-
-
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -36,30 +23,39 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-c8f2e!-c-3-e1(&@#=9f1m0_q=bbssr=n$$m59*jsi1l5qbvr_'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# Turn off debug mode in production
 DEBUG = False
-
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
+# Tell Django to trust the X-Forwarded-Proto header for HTTPS detection
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-# Add security headers to protect against XSS and other attacks
-SECURE_BROWSER_XSS_FILTER = True
+# Prevent your site from being framed (protects against clickjacking)
+X_FRAME_OPTIONS = "DENY"
+
+# Prevent browsers from MIME-sniffing a response away from the declared content-type
 SECURE_CONTENT_TYPE_NOSNIFF = True
-X_FRAME_OPTIONS = 'DENY'
 
+# Enable the browser's XSS filtering and prevent cross-site scripting attacks
+SECURE_BROWSER_XSS_FILTER = True
 
 # Ensure cookies are only sent over HTTPS
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 
-# Optionally, add other security settings:
-SECURE_SSL_REDIRECT = True  # Redirect all HTTP requests to HTTPS (make sure HTTPS is configured in production)
+# Redirect all HTTP requests to HTTPS (make sure HTTPS is configured in production)
+SECURE_SSL_REDIRECT = True
 
+# HTTP Strict Transport Security (HSTS) settings
+# Tell browsers to always use HTTPS for one year (31536000 seconds)
+SECURE_HSTS_SECONDS = 31536000
 
+# Apply HSTS policy to all subdomains
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 
-ALLOWED_HOSTS = []
+# Allow the site to be included in the browser's preload list for HSTS
+SECURE_HSTS_PRELOAD = True
 
 
 # Application definition
@@ -168,19 +164,3 @@ LOGIN_REDIRECT_URL = '/books/'
 LOGOUT_REDIRECT_URL = '/login/'
 
 AUTH_USER_MODEL = 'bookshelf.CustomUser'
-
-
-
-
-# Redirect all HTTP requests to HTTPS
-SECURE_SSL_REDIRECT = True
-
-# HTTP Strict Transport Security (HSTS) settings
-# Tell browsers to always use HTTPS for one year (31536000 seconds)
-SECURE_HSTS_SECONDS = 31536000
-
-# Apply HSTS policy to all subdomains
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-
-# Allow the site to be included in the browser's preload list for HSTS
-SECURE_HSTS_PRELOAD = True
