@@ -1,37 +1,29 @@
-# Django Models Project — relationship_app
+# Django Permissions and Groups Setup
 
-This Django project demonstrates advanced model relationships using Django's ORM.  
-It showcases the use of **ForeignKey**, **ManyToManyField**, and **OneToOneField** relationships through a simple library management example.
+## Overview
 
-## Project Structure
+This project demonstrates managing user permissions and groups in a Django application. 
 
-- `relationship_app/models.py` — Defines four models with complex relationships:
-  - **Author**: Represents authors.
-  - **Book**: Each book has a ForeignKey to an Author.
-  - **Library**: Each library contains many books (ManyToManyField).
-  - **Librarian**: One librarian per library (OneToOneField).
+## Permissions Created
 
-- `relationship_app/query_samples.py` — Contains example query functions to:
-  - Retrieve all books by a specific author.
-  - List all books in a library.
-  - Get the librarian assigned to a library.
+- `can_view`: Permission to view model instances.
+- `can_create`: Permission to create new model instances.
+- `can_edit`: Permission to edit existing model instances.
+- `can_delete`: Permission to delete model instances.
 
-## Setup & Usage
+## User Groups
 
-1. Clone the repository and navigate to the project directory.
-2. Ensure the app `relationship_app` is added to `INSTALLED_APPS` in `settings.py`.
-3. Run migrations:
-    ```bash
-    python manage.py makemigrations relationship_app
-    python manage.py migrate
-    ```
-4. Use the Django shell or run `query_samples.py` to test the queries.
+- **Viewers**: Can only view.
+- **Editors**: Can view, create, and edit.
+- **Admins**: Can view, create, edit, and delete.
 
-## Example Queries
+## Usage
 
-```python
-from relationship_app.query_samples import query_all_books_by_author, query_all_books_in_library, query_librarian_for_library
+- Assign users to one or more groups to grant them permissions.
+- Views are protected with Django's `@permission_required` decorator to enforce access control.
+- Test the permissions by logging in as users with different group assignments.
 
-books_by_author = query_all_books_by_author("J.K. Rowling")
-books_in_library = query_all_books_in_library("Central Library")
-librarian = query_librarian_for_library("Central Library")
+## Notes
+
+- The custom permissions are defined in the model's `Meta` class.
+- Groups and permissions are managed through the Django admin interface.
