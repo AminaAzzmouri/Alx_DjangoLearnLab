@@ -22,3 +22,22 @@ This project provides CRUD operations for books using Django REST Framework’s 
 - `?author_id=N` — Filters books by author.
 
 Example:
+
+
+GET /api/books/?year=2020
+GET /api/books/?author_id=1
+
+
+
+
+## API Filtering, Searching, and Ordering
+
+The **BookListView** now supports advanced querying.
+
+### Filtering
+Filter by:
+- `title`
+- `author`
+- `publication_year`
+
+Example:
