@@ -122,3 +122,26 @@ Templates – templates/blog/ contains all HTML templates extending base.html.
 - CSRF tokens included in all POST forms
 - Passwords hashed with Django's built-in password hasher
 - Profile view restricted to authenticated users
+
+
+
+--------------------------------------------------------------------
+
+
+## Blog Post Management
+
+### Features:
+- List all posts: `/posts/`
+- View single post: `/posts/<id>/`
+- Create new post: `/posts/new/` (authenticated users only)
+- Edit post: `/posts/<id>/edit/` (author only)
+- Delete post: `/posts/<id>/delete/` (author only)
+
+### Permissions:
+- All users can view posts.
+- Only logged-in users can create posts.
+- Only the author of a post can edit or delete it.
+
+### Forms:
+- PostForm handles creation and editing of posts.
+- CSRF tokens included in all forms.
