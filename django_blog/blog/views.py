@@ -70,8 +70,6 @@ def profile_view(request):
 
 
 
-
-
 # List all blog posts
 class PostListView(ListView):
     model = Post
