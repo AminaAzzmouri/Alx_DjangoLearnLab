@@ -85,3 +85,40 @@ CSS – static/css/styles.css contains all the styling for header, footer, forms
 JS – static/js/scripts.js handles basic dynamic behaviors.
 
 Templates – templates/blog/ contains all HTML templates extending base.html.
+
+
+
+------------------------------------------------------------------------
+
+## Authentication System Documentation:
+
+# User Authentication System
+
+## Features
+- Register new users with username, email, and password
+- Login existing users
+- Logout users
+- Profile management: view and update email
+
+## Templates
+- login.html: login form
+- register.html: registration form
+- profile.html: profile view and edit form
+- logout.html: logout confirmation page
+
+## URLs
+- /login/ → login
+- /logout/ → logout
+- /register/ → register
+- /profile/ → profile management
+
+## How to Test
+1. Register a new user at /register/
+2. Login at /login/
+3. View and update email at /profile/
+4. Logout at /logout/
+
+## Security
+- CSRF tokens included in all POST forms
+- Passwords hashed with Django's built-in password hasher
+- Profile view restricted to authenticated users
