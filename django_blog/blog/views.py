@@ -9,6 +9,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Post, Comment
 from .forms import PostForm, CommentForm
+from django.db.models import Q
+from taggit.models import Tag
 
 
 def home(request):
@@ -103,6 +105,25 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     def test_func(self):
         post = self.get_object()
         return self.request.user == post.author
+    
+    
+# Tag view
+def posts_by_tag(request, tag_name):
+    tag = get_object_or_404(Tag, name=tag_name)
+    posts = Post.objects.filter(tags__name__in=[tag_name])
+    return render(request, 'blog/posts_by_tag.html', {'tag': tag, 'posts': posts})
+
+# Search view
+def search_posts(request):
+    query = request.GET.get('q')
+    results = Post.objects.filter(
+        Q(title__icontains=query) |
+        Q(content__icontains=query) |
+        Q(tags__name__icontains=query)
+    ).distinct()
+    return render(request, 'blog/search_results.html', {'results': results, 'query': query})
+
+
 
 # Delete a post (only author)
 class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
@@ -113,8 +134,6 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def test_func(self):
         post = self.get_object()
         return self.request.user == post.author
-
-
 
 
 
