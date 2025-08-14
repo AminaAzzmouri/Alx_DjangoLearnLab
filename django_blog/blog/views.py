@@ -10,6 +10,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from .models import Post, Comment
 from .forms import PostForm, CommentForm
 
+
 def home(request):
     return render(request, 'blog/home.html')
 
@@ -155,3 +156,17 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def test_func(self):
         comment = self.get_object()
         return self.request.user == comment.author
+    
+    
+    
+class CommentCreateView(CreateView):
+    model = Comment
+    fields = ['content']  # Adjust fields based on your Comment model
+    template_name = 'blog/comment_form.html'  # Create this template
+
+    def form_valid(self, form):
+        form.instance.post_id = self.kwargs['pk']  # Link comment to the post
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('post-detail', kwargs={'pk': self.kwargs['pk']})
