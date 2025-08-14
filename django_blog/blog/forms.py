@@ -13,14 +13,13 @@ class CustomUserCreationForm(UserCreationForm):
 
 
 class PostForm(forms.ModelForm):
-    tags = forms.CharField(widget=TagWidget(attrs={'placeholder': 'Add tags separated by commas'}))
-
     class Meta:
         model = Post
         fields = ['title', 'content', 'tags']
         widgets = {
             'title': forms.TextInput(attrs={'placeholder': 'Post title'}),
             'content': forms.Textarea(attrs={'placeholder': 'Write your content here...'}),
+            'tags': TagWidget(attrs={'placeholder': 'Add tags separated by commas'}),
         }
 
 class CommentForm(forms.ModelForm):
