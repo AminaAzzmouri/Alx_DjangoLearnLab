@@ -13,6 +13,7 @@ class CustomUserCreationForm(UserCreationForm):
 
 
 class PostForm(forms.ModelForm):
+    tags = forms.CharField(widget=TagWidget(attrs={'placeholder': 'Add tags separated by commas'}))
     class Meta:
         model = Post
         fields = ['title', 'content', 'tags']
