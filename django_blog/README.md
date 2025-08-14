@@ -145,3 +145,17 @@ Templates – templates/blog/ contains all HTML templates extending base.html.
 ### Forms:
 - PostForm handles creation and editing of posts.
 - CSRF tokens included in all forms.
+
+
+
+
+-------------------------------------------------
+
+
+Adding the date_posted Field to Posts
+
+In this part of the project, we enhanced the Post model by adding a new field called date_posted. This field automatically records the timestamp when a post is created, which allows us to track when each post was published.
+
+Because our database already contained posts, Django prompted us to provide a default value for existing records. We had two options: either specify a one-time default for all existing posts or set a default in the model itself. By doing this, we ensured that the database remained consistent and all posts have a creation date.
+
+Finally, we created and applied migrations to update the database schema. This step demonstrates how Django handles schema changes and ensures that new features like timestamps can be added safely to existing applications.
