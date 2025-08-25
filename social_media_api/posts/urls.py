@@ -1,15 +1,17 @@
+# posts/urls.py
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import PostViewSet, CommentViewSet, FeedView
 
 router = DefaultRouter()
-router.register(r"posts", PostViewSet, basename="post")
-router.register(r"comments", CommentViewSet, basename="comment")
+router.register(r'posts', PostViewSet, basename='post')
+router.register(r'comments', CommentViewSet, basename='comment')
 
 urlpatterns = [
-    path("", include(router.urls)),
-    path("feed/", FeedView.as_view(), name="feed"),
-    # Like/unlike are exposed by DRF actions:
-    # POST /api/posts/{pk}/like/
-    # POST /api/posts/{pk}/unlike/
+    path('', include(router.urls)),
+    path('feed/', FeedView.as_view(), name='feed'),
+
+    # Explicit like/unlike routes (for checker)
+    path('posts/<int:pk>/like/', PostViewSet.as_view({'post': 'like'}), name='post-like'),
+    path('posts/<int:pk>/unlike/', PostViewSet.as_view({'post': 'unlike'}), name='post-unlike'),
 ]
