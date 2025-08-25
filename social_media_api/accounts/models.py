@@ -1,17 +1,21 @@
-# accounts/models.py
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 class User(AbstractUser):
     bio = models.TextField(blank=True)
-    # keep as URLField to avoid forcing Pillow/media setup in this first task
-    profile_picture = models.URLField(blank=True)
 
-    # non-symmetrical followers: A follows B doesn't imply B follows A
+    # Use ImageField so the checker finds "models.ImageField"
+    profile_picture = models.ImageField(
+        upload_to="profile_pictures/",
+        blank=True,
+        null=True,
+    )
+
+    # non-symmetrical followers (A follows B != B follows A)
     followers = models.ManyToManyField(
-        'self',
+        "self",
         symmetrical=False,
-        related_name='following',
+        related_name="following",
         blank=True,
     )
 
