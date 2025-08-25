@@ -39,3 +39,16 @@ class CommentViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
+
+
+class FeedView(generics.ListAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = PostSerializer
+
+    def get_queryset(self):
+        u = self.request.user
+        # Posts from users I follow
+        qs = Post.objects.filter(author__in=u.following.all())
+        # If you also want to include the current user's posts in their feed, use:
+        # qs = Post.objects.filter(author__in=list(u.following.all()) + [u])
+        return qs.select_related("author").prefetch_related("comments__author").order_by("-created_at")

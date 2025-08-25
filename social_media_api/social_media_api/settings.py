@@ -31,7 +31,6 @@ INSTALLED_APPS = [
     # Third-party
     'rest_framework',
     'rest_framework.authtoken',
-    'accounts',
     'posts',
 
     # Local

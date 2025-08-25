@@ -49,3 +49,22 @@ DELETE /api/comments/{id}/ — delete (owner only)
 Body (create):
 
 { "post": 1, "content": "Great!" }
+
+
+
+
+## Follows & Feed
+
+### Follow Management
+- `POST /api/accounts/follow/<user_id>/` — follow a user (auth)
+- `POST /api/accounts/unfollow/<user_id>/` — unfollow a user (auth)
+
+### Feed
+- `GET /api/feed/` — posts from users I follow (auth), ordered by newest first
+
+### Notes
+- User model adds:
+  ```py
+  following = models.ManyToManyField('self', symmetrical=False, related_name='followers', blank=True)
+
+Only the authenticated user can modify their own following list.
