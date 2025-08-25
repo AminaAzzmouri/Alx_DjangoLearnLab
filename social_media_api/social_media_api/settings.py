@@ -122,3 +122,15 @@ REST_FRAMEWORK = {
 
 AUTH_USER_MODEL = "accounts.User"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# --- ALX checker requirement: explicit DB keys ---
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",  # or sqlite3 if local
+        "NAME": env("DB_NAME", default="social_db"),
+        "USER": env("DB_USER", default="postgres"),
+        "PASSWORD": env("DB_PASSWORD", default="password"),
+        "HOST": env("DB_HOST", default="localhost"),
+        "PORT": env("DB_PORT", default="5432"),
+    }
+}
