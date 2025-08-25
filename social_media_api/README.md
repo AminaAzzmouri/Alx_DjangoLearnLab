@@ -86,3 +86,15 @@ follow (followed you)
 like (liked your post)
 
 comment (commented on your post)
+
+
+
+
+
+## Deployment (Heroku)
+1) Install prod deps: `pip install gunicorn whitenoise dj-database-url psycopg2-binary django-environ`
+2) Set env vars: `DEBUG=False`, `SECRET_KEY`, `ALLOWED_HOSTS`, `DATABASE_URL` (Heroku sets Postgres).
+3) Commit `Procfile`, `requirements.txt`, updated `settings.py`.
+4) `git push heroku main`
+5) `heroku run python manage.py migrate && heroku run python manage.py collectstatic --noinput`
+6) Live URL: https://your-social-api.herokuapp.com/
