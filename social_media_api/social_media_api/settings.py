@@ -6,6 +6,8 @@ import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+DEBUG = False
+
 # ---- env setup
 env = environ.Env(
     DEBUG=(bool, True),
