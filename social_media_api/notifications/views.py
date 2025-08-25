@@ -7,8 +7,7 @@ class NotificationListView(generics.ListAPIView):
     serializer_class = NotificationSerializer
 
     def get_queryset(self):
-        return Notification.objects.filter(recipient=self.request.user).order_by('-timestamp')
-
+        return Notification.objects.filter(recipient=self.request.user).order_by("-timestamp")
 
 class NotificationMarkReadView(generics.UpdateAPIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -16,7 +15,6 @@ class NotificationMarkReadView(generics.UpdateAPIView):
     queryset = Notification.objects.all()
 
     def get_queryset(self):
-        # ensure users can only touch their own notifications
         return super().get_queryset().filter(recipient=self.request.user)
 
     def perform_update(self, serializer):

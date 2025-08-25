@@ -4,14 +4,13 @@ from django.db import models
 class User(AbstractUser):
     bio = models.TextField(blank=True)
 
-    # ImageField to satisfy earlier checker requirements
     profile_picture = models.ImageField(
         upload_to="profile_pictures/",
         blank=True,
         null=True,
     )
 
-    # Users that THIS user follows (non-symmetrical)
+    # Users THIS user follows
     following = models.ManyToManyField(
         "self",
         symmetrical=False,

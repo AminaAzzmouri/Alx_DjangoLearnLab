@@ -1,4 +1,3 @@
-# posts/views.py
 from rest_framework import viewsets, permissions, filters, generics, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -7,13 +6,12 @@ from rest_framework.pagination import PageNumberPagination
 from .models import Post, Comment, Like
 from .serializers import PostSerializer, CommentSerializer, LikeSerializer
 from .permissions import IsOwnerOrReadOnly
-from notifications.utils import create_notification
+from notifications.utils import create_notification  # safe with apps.get_model
 
 class DefaultPagination(PageNumberPagination):
     page_size = 10
     page_size_query_param = "page_size"
     max_page_size = 100
-
 
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all().select_related("author").prefetch_related("comments__author", "likes")
@@ -35,7 +33,6 @@ class PostViewSet(viewsets.ModelViewSet):
         if not created:
             return Response({"detail": "You already liked this post."}, status=status.HTTP_200_OK)
 
-        # notify post author (don’t notify self-like)
         if post.author_id != request.user.id:
             create_notification(recipient=post.author, actor=request.user, verb="liked your post", target=post)
 
@@ -49,7 +46,6 @@ class PostViewSet(viewsets.ModelViewSet):
             return Response({"detail": "Post unliked."})
         return Response({"detail": "You have not liked this post."}, status=status.HTTP_400_BAD_REQUEST)
 
-
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all().select_related("author", "post")
     serializer_class = CommentSerializer
@@ -62,10 +58,8 @@ class CommentViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         comment = serializer.save(author=self.request.user)
-        # notify post author about new comment (no self-notify)
         if comment.post.author_id != self.request.user.id:
             create_notification(recipient=comment.post.author, actor=self.request.user, verb="commented on your post", target=comment.post)
-
 
 class FeedView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated]

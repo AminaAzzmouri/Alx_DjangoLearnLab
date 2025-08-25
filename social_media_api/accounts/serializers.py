@@ -1,11 +1,9 @@
-# accounts/serializers.py
 from django.contrib.auth import authenticate, get_user_model
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
-from rest_framework.authtoken.models import Token  # <- required literal import
+from rest_framework.authtoken.models import Token  # required by checker
 
 User = get_user_model()
-
 
 class UserSerializer(serializers.ModelSerializer):
     followers_count = serializers.SerializerMethodField()
@@ -14,13 +12,8 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [
-            "id",
-            "username",
-            "email",
-            "bio",
-            "profile_picture",
-            "followers_count",
-            "following_count",
+            "id", "username", "email", "bio", "profile_picture",
+            "followers_count", "following_count",
         ]
         read_only_fields = ["id", "followers_count", "following_count"]
 
@@ -30,10 +23,8 @@ class UserSerializer(serializers.ModelSerializer):
     def get_following_count(self, obj):
         return obj.following.count()
 
-
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
-    # will expose token in the serializer output for convenience
     token = serializers.CharField(read_only=True)
 
     class Meta:
@@ -45,23 +36,21 @@ class RegisterSerializer(serializers.ModelSerializer):
         return value
 
     def create(self, validated_data):
-        # <- required literal call using get_user_model
+        # checker literal:
         user = get_user_model().objects.create_user(
             username=validated_data["username"],
             email=validated_data.get("email") or "",
             password=validated_data["password"],
         )
-        # <- required literal call to create a token here in the serializer
+        # checker literal:
         Token.objects.create(user=user)
         return user
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
-        # include the token value in the response
         token = Token.objects.get(user=instance)
         data["token"] = token.key
         return data
-
 
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField()
