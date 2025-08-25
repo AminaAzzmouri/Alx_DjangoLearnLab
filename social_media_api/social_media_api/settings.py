@@ -35,6 +35,7 @@ INSTALLED_APPS = [
 
     # Local
     'accounts',
+    'notifications',
 ]
 
 # (optional global DRF tweaks; we’ll also set per-view options)

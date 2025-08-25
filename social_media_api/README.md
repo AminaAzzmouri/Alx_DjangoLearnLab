@@ -68,3 +68,21 @@ Body (create):
   following = models.ManyToManyField('self', symmetrical=False, related_name='followers', blank=True)
 
 Only the authenticated user can modify their own following list.
+
+
+
+POST /api/posts/{pk}/like/ — like a post (auth)
+
+POST /api/posts/{pk}/unlike/ — unlike a post (auth)
+
+GET /api/notifications/ — list (auth), newest first, shows unread/read
+
+PATCH /api/notifications/{pk}/read/ — mark read (auth)
+
+Notifications created on:
+
+follow (followed you)
+
+like (liked your post)
+
+comment (commented on your post)

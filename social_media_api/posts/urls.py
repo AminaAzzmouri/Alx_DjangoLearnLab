@@ -8,5 +8,9 @@ router.register(r'comments', CommentViewSet, basename='comment')
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('feed/', FeedView.as_view(), name='feed'),  # <-- new
+    path('feed/', FeedView.as_view(), name='feed'),
+    
+    With @action(detail=True), DRF exposes:
+        POST /api/posts/{pk}/like/
+        POST /api/posts/{pk}/unlike/
 ]

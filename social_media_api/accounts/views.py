@@ -8,6 +8,8 @@ from rest_framework.response import Response
 from .serializers import RegisterSerializer, LoginSerializer, UserSerializer
 from rest_framework.authtoken.models import Token
 
+from notifications.utils import create_notification
+
 CustomUser = get_user_model()
 
 # -------- Registration / Login / Profile (existing) --------
@@ -85,6 +87,8 @@ def follow_user(request, user_id):
         return Response({"detail": "You cannot follow yourself."}, status=status.HTTP_400_BAD_REQUEST)
     target = get_object_or_404(CustomUser, pk=user_id)
     request.user.following.add(target)
+    if target.id != request.user.id:
+        create_notification(recipient=target, actor=request.user, verb="followed you", target=None)
     return Response({"detail": f"Now following {target.username}."})
 
 @api_view(["POST"])
